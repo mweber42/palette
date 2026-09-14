@@ -1,4 +1,6 @@
 # Palette
+HEAD
+=======
 
 Palette is a platform connecting independent visual artists with collectors
 worldwide through fine-art poster printing. Artists keep authorship of their
