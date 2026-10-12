@@ -14,11 +14,13 @@ export default function AboutPage() {
     { label: t.craftLabel, body: t.craftBody },
   ];
 
+  // Commitments, not traction figures: no number here depends on data we
+  // don't have yet (placeholders such as "94 countries" were removed).
   const stats = [
-    { value: "94", label: t.statCountries },
-    { value: "1,240", label: t.statArtists },
-    { value: "09", label: t.statStudios },
-    { value: "0%", label: t.statFees },
+    { value: "0 €", label: t.statArtistFees },
+    { value: "0", label: t.statRankings },
+    { value: "100 %", label: t.statCredited },
+    { value: "0", label: t.statAiTraining },
   ];
 
   return (

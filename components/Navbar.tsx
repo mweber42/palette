@@ -4,12 +4,26 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useLang } from "./LangProvider";
+import { createClient } from "@/lib/supabase/client";
 import { mono } from "@/lib/ui";
 
 export default function Navbar() {
   const { t, lang, setLang } = useLang();
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
+  const [signedIn, setSignedIn] = useState(false);
+
+  // Client-side session check, so the layout (and every page) stays
+  // statically renderable. Only decides "Join" vs "My space".
+  useEffect(() => {
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) return;
+    const supabase = createClient();
+    supabase.auth.getSession().then(({ data }) => setSignedIn(!!data.session));
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => setSignedIn(!!session));
+    return () => sub.subscription.unsubscribe();
+  }, []);
+
+  const cta = signedIn ? { href: "/account", label: t.navAccount } : { href: "/join", label: t.navJoin };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -81,17 +95,17 @@ export default function Navbar() {
             </button>
           </span>
           <Link
-            href="/join"
+            href={cta.href}
             className="border border-sanguine text-sanguine px-[18px] py-[11px] transition-colors duration-300 hover:bg-sanguine hover:text-paper"
           >
-            {t.navJoin}
+            {cta.label}
           </Link>
         </div>
 
         {/* Mobile: compact links, no wasted chrome */}
         <div className={`flex md:hidden items-center gap-4 ${mono}`}>
-          <Link href="/join" className="border border-sanguine text-sanguine px-3 py-2">
-            {t.navJoin}
+          <Link href={cta.href} className="border border-sanguine text-sanguine px-3 py-2">
+            {cta.label}
           </Link>
         </div>
       </div>

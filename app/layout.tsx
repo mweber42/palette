@@ -11,9 +11,9 @@ import CursorRing from "@/components/CursorRing";
 // build time — safer for CI/sandboxed builds and identical on Vercel).
 
 export const metadata: Metadata = {
-  title: "Palette — Art for every wall on earth",
+  title: "Palette — Art made by people, seen by everyone",
   description:
-    "Fine-art prints from independent artists, produced to order and shipped worldwide.",
+    "A community of independent visual artists, the places that show their work, and the people who love it. No popularity ranking, free for artists.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

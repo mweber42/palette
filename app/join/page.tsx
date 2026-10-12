@@ -1,12 +1,21 @@
 "use client";
 
+import Link from "next/link";
 import Reveal from "@/components/Reveal";
-import JoinForm from "@/components/JoinForm";
 import { useLang } from "@/components/LangProvider";
-import { mono } from "@/lib/ui";
+import { mono, hairlineGrid } from "@/lib/ui";
 
+// v2: /join is where everyone chooses their account type. The old anonymous
+// artist application form (no account behind it) is retired — artists now
+// create a real profile that goes live once complete (ADR-009).
 export default function JoinPage() {
   const { t } = useLang();
+
+  const choices = [
+    { href: "/signup?type=artist", num: "01", title: t.joinArtistTitle, body: t.joinArtistBody },
+    { href: "/signup?type=space", num: "02", title: t.joinSpaceTitle, body: t.joinSpaceBody },
+    { href: "/signup?type=member", num: "03", title: t.joinMemberTitle, body: t.joinMemberBody },
+  ];
 
   return (
     <div>
@@ -31,29 +40,38 @@ export default function JoinPage() {
         </Reveal>
       </section>
 
-      <section className="relative bg-ink mt-16 md:mt-32 py-16 md:py-32 px-5 sm:px-9 md:px-18 overflow-hidden">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage:
-              "repeating-linear-gradient(90deg, rgba(255,255,255,0.045) 0 1px, transparent 1px 64px), repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 64px)",
-          }}
-        />
-        <Reveal
-          className="relative max-w-[880px] mx-auto p-7 sm:p-12 lg:p-16 text-offwhite"
-          style={{
-            background: "rgba(10,10,10,0.55)",
-            backdropFilter: "blur(24px)",
-            WebkitBackdropFilter: "blur(24px)",
-            borderTop: "1px solid rgba(255,255,255,0.4)",
-            borderLeft: "1px solid rgba(255,255,255,0.14)",
-            borderRight: "1px solid rgba(255,255,255,0.06)",
-            borderBottom: "1px solid rgba(255,255,255,0.05)",
-            boxShadow: "0 50px 90px -50px rgba(0,0,0,0.9)",
-          }}
-        >
-          <JoinForm />
+      <section className="max-w-[1680px] mx-auto px-5 sm:px-9 md:px-18 pt-20 md:pt-36 pb-20 md:pb-36">
+        <Reveal className="flex items-baseline justify-between gap-6 pb-5 md:pb-9 border-b border-black/8">
+          <h2 className="m-0 text-[28px] md:text-5xl lg:text-6xl leading-none tracking-[-0.02em] font-medium">
+            {t.joinChooseEyebrow}
+          </h2>
         </Reveal>
+        <div className={`${hairlineGrid} grid-cols-1 md:grid-cols-12 border-t-0`}>
+          {choices.map((c, i) => (
+            <Reveal key={c.href} index={i} className="md:col-span-4">
+              <Link
+                href={c.href}
+                className="group bg-paper text-ink min-h-[240px] md:min-h-[320px] p-6 md:p-9 flex flex-col h-full transition-colors duration-400 hover:bg-ink hover:text-offwhite"
+              >
+                <div className={`${mono} text-mid`}>{c.num}</div>
+                <div className="mt-12 md:mt-20 text-[28px] md:text-[40px] leading-none tracking-[-0.02em] font-medium">{c.title}</div>
+                <p className="mt-4 text-[15px] leading-relaxed text-mid max-w-[36ch]">{c.body}</p>
+                <div className={`${mono} mt-auto pt-6 self-start border-b border-transparent group-hover:border-sanguine group-hover:text-sanguine transition-colors`}>
+                  {t.joinChooseCta} →
+                </div>
+              </Link>
+            </Reveal>
+          ))}
+          <Reveal index={3} className="md:col-span-12">
+            <div className="bg-paper p-6 md:p-9 flex flex-wrap items-center justify-between gap-4 text-mid">
+              <div>
+                <div className="text-lg md:text-2xl tracking-[-0.02em] font-medium text-ink/50">{t.joinOrgTitle}</div>
+                <p className="mt-2 text-[15px] leading-relaxed">{t.joinOrgBody}</p>
+              </div>
+              <span className={`${mono} border border-black/12 px-4 py-2.5`}>{t.joinOrgSoon}</span>
+            </div>
+          </Reveal>
+        </div>
       </section>
     </div>
   );

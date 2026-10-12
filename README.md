@@ -1,6 +1,4 @@
 # Palette
-<<<<<<< HEAD
-=======
 
 Palette is a platform connecting independent visual artists with collectors
 worldwide through fine-art poster printing. Artists keep authorship of their
@@ -48,4 +46,3 @@ Then open http://localhost:3000.
 
 Environment variables are documented in `.env.local.example`; the database
 schema is in `supabase/schema.sql`.
->>>>>>> 4612392 (updatde README introduction)

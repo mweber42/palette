@@ -18,35 +18,42 @@
   --font-mono: var(--font-geist-mono);
 }
 
-* {
-  box-sizing: border-box;
-}
+/* Base element styles live in the `base` layer: in Tailwind v4, utility
+   classes are in a CSS layer, and any UNlayered rule beats them whatever
+   its specificity. Unlayered, `a { color: inherit }` silently overrode
+   classes like text-paper / text-sanguine on links (sanguine buttons with
+   dark text, the nav "Join" in black). */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
 
-html {
-  scroll-behavior: smooth;
-}
+  html {
+    scroll-behavior: smooth;
+  }
 
-body {
-  margin: 0;
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), "Helvetica Neue", Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  text-wrap: pretty;
-}
+  body {
+    margin: 0;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans), "Helvetica Neue", Helvetica, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-wrap: pretty;
+  }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 
-input,
-select,
-textarea,
-button {
-  font-family: inherit;
-  font-size: inherit;
-  color: inherit;
+  input,
+  select,
+  textarea,
+  button {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+  }
 }
 
 ::selection {

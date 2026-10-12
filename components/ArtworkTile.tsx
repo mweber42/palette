@@ -10,12 +10,10 @@ export default function ArtworkTile({
   work,
   aspect = "aspect-[3/4]",
   big = false,
-  showPrice = true,
 }: {
   work: Artwork;
   aspect?: string;
   big?: boolean;
-  showPrice?: boolean;
 }) {
   const { lang } = useLang();
   const artist = ARTISTS.find((a) => a.id === work.artistId);
@@ -53,7 +51,6 @@ export default function ArtworkTile({
             {artist.name}
           </Link>
         )}
-        {showPrice && <div className={`${mono} text-ink`}>{work.price}</div>}
       </div>
     </div>
   );

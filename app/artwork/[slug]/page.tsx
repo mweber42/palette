@@ -1,9 +1,10 @@
 "use client";
 
-import { use, useState } from "react";
+import { use } from "react";
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import ArtworkTile from "@/components/ArtworkTile";
+import ShareButton from "@/components/ShareButton";
 import { useLang } from "@/components/LangProvider";
 import { ARTISTS, ARTWORKS, artworkBySlug, relatedWorks, catLabel, mediumLabel, pad } from "@/lib/data";
 import { mono } from "@/lib/ui";
@@ -11,7 +12,6 @@ import { mono } from "@/lib/ui";
 export default function ArtworkPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
   const { t, lang } = useLang();
-  const [ordered, setOrdered] = useState(false);
   const work = artworkBySlug(slug);
 
   if (!work) {
@@ -71,19 +71,23 @@ export default function ArtworkPage({ params }: { params: Promise<{ slug: string
               <span className={`ml-auto ${mono} text-mid`}>{t.profileArrow}</span>
             </Link>
           )}
-          <p className="mt-5 md:mt-7 text-base leading-relaxed text-mid max-w-[44ch]">{t.printSpec}</p>
-          <div className="flex items-baseline gap-4 mt-6 md:mt-9">
-            <div className="text-2xl md:text-[34px] font-medium tracking-[-0.02em]">{work.price}</div>
-            <div className={`${mono} text-mid`}>{t.shippingIncl}</div>
-          </div>
-          <button
-            type="button"
-            onClick={() => setOrdered(true)}
-            className={`mt-5 md:mt-7 w-full bg-sanguine text-paper border-0 py-[22px] ${mono} cursor-pointer transition-colors duration-400 hover:bg-ink`}
+          {/* No sales for now (ADR-001): "I want it" records a purchase
+              intent, no payment (ADR-002). Demo artworks aren't in the
+              database, so here it leads to a free member account. */}
+          <p className="mt-5 md:mt-7 text-base leading-relaxed text-mid max-w-[44ch]">{t.presaleNote}</p>
+          <Link
+            href="/signup?type=member"
+            className={`mt-5 md:mt-7 block text-center w-full bg-sanguine text-paper border-0 py-[22px] ${mono} transition-colors duration-400 hover:bg-ink`}
           >
-            {ordered ? t.ordered : t.orderCta}
-          </button>
-          <div className={`mt-4 ${mono} text-mid`}>{t.shipReturns}</div>
+            {t.wantCta}
+          </Link>
+          <div className={`mt-4 ${mono} text-mid`}>{t.wantHint}</div>
+          <div className="mt-6 pt-4 border-t border-black/8">
+            <ShareButton
+              title={`${work.title} — ${artist?.name ?? "Palette"}`}
+              labels={{ share: t.shareCta, copied: t.linkCopied, pinterest: t.pinterestCta }}
+            />
+          </div>
         </Reveal>
       </div>
 
